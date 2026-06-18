@@ -1,5 +1,6 @@
 namespace TaskManagementSystem.Api.Configurations;
 
+// Parametros para crear automaticamente un admin al iniciar la API.
 public sealed class AdminUserSeedOptions
 {
     public const string SectionName = "AdminUserSeed";

@@ -3,6 +3,7 @@ using TaskManagementSystem.Api.Entities;
 
 namespace TaskManagementSystem.Api.DTOs;
 
+// Contrato de entrada para crear o actualizar usuarios desde HTTP.
 public sealed class CreateUserRequest
 {
     [Required]

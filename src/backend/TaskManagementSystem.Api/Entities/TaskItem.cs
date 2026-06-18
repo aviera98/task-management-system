@@ -1,5 +1,6 @@
 namespace TaskManagementSystem.Api.Entities;
 
+// Version simple de tarea usada por la API para persistir datos basicos.
 public sealed class TaskItem
 {
     public Guid Id { get; set; }

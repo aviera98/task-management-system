@@ -1,5 +1,6 @@
 namespace TaskManagementSystem.Domain.Enums;
 
+// Prioridad de negocio usada para ordenar o escalar tareas.
 public enum TaskPriority
 {
     Low = 1,

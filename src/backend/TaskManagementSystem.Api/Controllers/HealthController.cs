@@ -5,6 +5,7 @@ namespace TaskManagementSystem.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+// Endpoint liviano para verificar que la API responda.
 public sealed class HealthController(IHealthService healthService) : ControllerBase
 {
     [HttpGet]

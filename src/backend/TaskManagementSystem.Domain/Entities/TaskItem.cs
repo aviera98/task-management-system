@@ -4,8 +4,10 @@ using TaskItemStatus = TaskManagementSystem.Domain.Enums.TaskStatus;
 
 namespace TaskManagementSystem.Domain.Entities;
 
+// Entidad de dominio de tareas con reglas de creacion y cambio de estado.
 public sealed class TaskItem : IAuditableEntity
 {
+    // EF Core necesita un constructor vacio para materializar la entidad.
     private TaskItem()
     {
     }
@@ -25,6 +27,7 @@ public sealed class TaskItem : IAuditableEntity
         TaskPriority priority,
         DateOnly? dueDate = null)
     {
+        // La entidad protege su propio estado minimo valido.
         if (string.IsNullOrWhiteSpace(title))
         {
             throw new ArgumentException("Task title is required.", nameof(title));
@@ -44,6 +47,7 @@ public sealed class TaskItem : IAuditableEntity
 
     public void UpdateStatus(TaskItemStatus status)
     {
+        // Todo cambio relevante actualiza la marca de auditoria.
         Status = status;
         UpdatedAtUtc = DateTime.UtcNow;
     }

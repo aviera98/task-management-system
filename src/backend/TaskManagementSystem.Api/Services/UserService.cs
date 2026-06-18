@@ -5,6 +5,7 @@ using TaskManagementSystem.Api.Repositories;
 
 namespace TaskManagementSystem.Api.Services;
 
+// Contiene la logica de negocio de usuarios antes de tocar la base de datos.
 public sealed class UserService(
     IUserRepository userRepository,
     IPasswordHasher passwordHasher) : IUserService
@@ -13,6 +14,7 @@ public sealed class UserService(
         CreateUserRequest request,
         CancellationToken cancellationToken = default)
     {
+        // Se normaliza el email y se evita duplicarlo antes de persistir.
         await EnsureEmailIsUniqueAsync(request.Email, null, cancellationToken);
 
         var user = new User
@@ -38,6 +40,7 @@ public sealed class UserService(
     public async Task<IReadOnlyCollection<UserResponse>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         var users = await userRepository.GetAllAsync(cancellationToken);
+        // Se exponen DTOs para no devolver la entidad interna completa.
         return users.Select(MapToResponse).ToArray();
     }
 
@@ -52,12 +55,14 @@ public sealed class UserService(
         CreateUserRequest request,
         CancellationToken cancellationToken = default)
     {
+        // Primero se verifica que el nuevo email no choque con otro usuario.
         var existingUser = await userRepository.GetByEmailAsync(request.Email.Trim().ToLowerInvariant(), cancellationToken);
         if (existingUser is not null && existingUser.Id != id)
         {
             throw new ValidationException("A user with the same email already exists.");
         }
 
+        // Luego se carga el usuario actual y se actualizan sus campos mutables.
         var currentUser = await userRepository.GetByIdAsync(id, cancellationToken);
         if (currentUser is null)
         {
@@ -80,6 +85,7 @@ public sealed class UserService(
         Guid? currentUserId,
         CancellationToken cancellationToken)
     {
+        // Metodo reutilizable para altas y futuras ediciones.
         var existingUser = await userRepository.GetByEmailAsync(email.Trim().ToLowerInvariant(), cancellationToken);
 
         if (existingUser is not null && existingUser.Id != currentUserId)
@@ -90,6 +96,7 @@ public sealed class UserService(
 
     private static UserResponse MapToResponse(User user)
     {
+        // Nunca se devuelve PasswordHash al exterior.
         return new UserResponse(
             user.Id,
             user.FirstName,

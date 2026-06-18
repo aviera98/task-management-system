@@ -6,12 +6,14 @@ namespace TaskManagementSystem.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+// Expone endpoints CRUD basicos para usuarios.
 public sealed class UsersController(IUserService userService) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(typeof(IReadOnlyCollection<UserResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
+        // El controlador delega la logica al servicio y solo traduce a HTTP.
         var users = await userService.GetAllAsync(cancellationToken);
         return Ok(users);
     }
@@ -32,6 +34,7 @@ public sealed class UsersController(IUserService userService) : ControllerBase
         [FromBody] CreateUserRequest request,
         CancellationToken cancellationToken)
     {
+        // Devuelve 201 con la ubicacion del recurso recien creado.
         var createdUser = await userService.CreateAsync(request, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = createdUser.Id }, createdUser);
     }

@@ -4,6 +4,8 @@ using TaskManagementSystem.Api.Middleware;
 using TaskManagementSystem.Api.Repositories;
 using TaskManagementSystem.Api.Services;
 
+// Punto de entrada de la API.
+// Aqui se registran dependencias, base de datos, CORS y middleware global.
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -18,6 +20,8 @@ var databaseOptions = builder.Configuration
     .GetSection(DatabaseOptions.SectionName)
     .Get<DatabaseOptions>() ?? new DatabaseOptions();
 
+// La aplicacion puede correr con EF InMemory para desarrollo/pruebas
+// o con SQL Server cuando existe una cadena de conexion real.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     if (databaseOptions.UseInMemory)
@@ -40,6 +44,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<DatabaseInitializationService>();
 builder.Services.AddCors(options =>
 {
+    // Politica para permitir al frontend local consumir la API.
     options.AddPolicy("Frontend", policy =>
     {
         policy
@@ -53,6 +58,7 @@ var app = builder.Build();
 
 await using (var scope = app.Services.CreateAsyncScope())
 {
+    // Asegura que la base exista, aplique migraciones y tenga datos iniciales.
     var databaseInitializationService = scope.ServiceProvider.GetRequiredService<DatabaseInitializationService>();
     await databaseInitializationService.InitializeAsync();
 }
@@ -63,6 +69,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Centraliza el manejo de errores antes de llegar a los controladores.
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseCors("Frontend");

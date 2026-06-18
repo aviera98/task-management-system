@@ -6,6 +6,7 @@ using TaskManagementSystem.Api.Repositories;
 
 namespace TaskManagementSystem.Api.Services;
 
+// Prepara la base de datos al arrancar la API y garantiza un usuario admin inicial.
 public sealed class DatabaseInitializationService(
     ApplicationDbContext dbContext,
     IOptions<AdminUserSeedOptions> adminUserSeedOptions,
@@ -14,6 +15,7 @@ public sealed class DatabaseInitializationService(
 {
     public async Task InitializeAsync(CancellationToken cancellationToken = default)
     {
+        // InMemory necesita EnsureCreated; SQL Server usa migraciones.
         if (dbContext.Database.IsInMemory())
         {
             await dbContext.Database.EnsureCreatedAsync(cancellationToken);
@@ -30,6 +32,7 @@ public sealed class DatabaseInitializationService(
     {
         var options = adminUserSeedOptions.Value;
 
+        // El seeding puede deshabilitarse desde configuracion.
         if (!options.Enabled)
         {
             return;
@@ -38,11 +41,13 @@ public sealed class DatabaseInitializationService(
         var email = options.Email.Trim().ToLowerInvariant();
         var existingUser = await userRepository.GetByEmailAsync(email, cancellationToken);
 
+        // Evita duplicar el admin si la base ya fue inicializada antes.
         if (existingUser is not null)
         {
             return;
         }
 
+        // El admin inicial se crea con datos de configuracion y password hasheado.
         var adminUser = new User
         {
             Id = Guid.NewGuid(),

@@ -4,10 +4,12 @@ using TaskItemStatus = TaskManagementSystem.Domain.Enums.TaskStatus;
 
 namespace TaskManagementSystem.Infrastructure.Persistence;
 
+// Inserta datos de ejemplo para levantar el dashboard con contenido inicial.
 public static class TaskManagementDbContextSeed
 {
     public static async Task SeedAsync(TaskManagementDbContext dbContext)
     {
+        // Si ya hay tareas, no se vuelve a sembrar para no duplicar registros.
         if (dbContext.Tasks.Any())
         {
             return;
@@ -35,6 +37,7 @@ public static class TaskManagementDbContextSeed
         seededTasks[0].UpdateStatus(TaskItemStatus.InProgress);
         seededTasks[1].UpdateStatus(TaskItemStatus.Completed);
 
+        // Persiste el lote inicial en una sola operacion.
         await dbContext.Tasks.AddRangeAsync(seededTasks);
         await dbContext.SaveChangesAsync();
     }

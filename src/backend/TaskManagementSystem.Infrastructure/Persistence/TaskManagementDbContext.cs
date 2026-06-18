@@ -3,6 +3,7 @@ using TaskManagementSystem.Domain.Entities;
 
 namespace TaskManagementSystem.Infrastructure.Persistence;
 
+// Contexto EF Core de la arquitectura limpia para tareas de dominio.
 public sealed class TaskManagementDbContext(DbContextOptions<TaskManagementDbContext> options)
     : DbContext(options)
 {
@@ -10,6 +11,7 @@ public sealed class TaskManagementDbContext(DbContextOptions<TaskManagementDbCon
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Descubre y aplica configuraciones del ensamblado de infraestructura.
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(TaskManagementDbContext).Assembly);
     }
 }

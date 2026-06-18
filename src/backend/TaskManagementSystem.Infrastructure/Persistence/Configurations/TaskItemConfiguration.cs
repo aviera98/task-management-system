@@ -4,6 +4,7 @@ using TaskManagementSystem.Domain.Entities;
 
 namespace TaskManagementSystem.Infrastructure.Persistence.Configurations;
 
+// Mapeo EF Core para la entidad TaskItem del dominio.
 public sealed class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
 {
     public void Configure(EntityTypeBuilder<TaskItem> builder)
@@ -19,6 +20,7 @@ public sealed class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
         builder.Property(task => task.Description)
             .HasMaxLength(1000);
 
+        // Los enums se almacenan como enteros para simplificar consultas y persistencia.
         builder.Property(task => task.Priority)
             .HasConversion<int>();
 

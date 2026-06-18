@@ -1,5 +1,6 @@
 namespace TaskManagementSystem.Domain.Enums;
 
+// Estados posibles del ciclo de vida de una tarea.
 public enum TaskStatus
 {
     Pending = 1,

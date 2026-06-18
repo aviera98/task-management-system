@@ -4,6 +4,7 @@ using TaskManagementSystem.Api.Entities;
 
 namespace TaskManagementSystem.Api.Configurations;
 
+// Configuracion EF Core para la entidad TaskItem del proyecto API.
 public sealed class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
 {
     public void Configure(EntityTypeBuilder<TaskItem> builder)
