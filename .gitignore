@@ -12,3 +12,7 @@ coverage/
 .env.*
 !.env.example
 docker-data/
+api-start.log
+api-start.err.log
+frontend-start.log
+frontend-start.err.log
