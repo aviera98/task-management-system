@@ -1,17 +1,37 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using TaskManagementSystem.Api.Extensions;
-using TaskManagementSystem.Application;
-using TaskManagementSystem.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using TaskManagementSystem.Api.Configurations;
+using TaskManagementSystem.Api.Middleware;
+using TaskManagementSystem.Api.Repositories;
+using TaskManagementSystem.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.Configure<DatabaseOptions>(
+    builder.Configuration.GetSection(DatabaseOptions.SectionName));
+
+var databaseOptions = builder.Configuration
+    .GetSection(DatabaseOptions.SectionName)
+    .Get<DatabaseOptions>() ?? new DatabaseOptions();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    if (databaseOptions.UseInMemory)
+    {
+        options.UseInMemoryDatabase("TaskManagementSystemDb");
+        return;
+    }
+
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? throw new InvalidOperationException("DefaultConnection is missing.");
+
+    options.UseSqlServer(connectionString);
+});
+
+builder.Services.AddScoped<IHealthService, HealthService>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Frontend", policy =>
@@ -23,29 +43,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-var jwtKey = builder.Configuration["Jwt:Key"] ?? "development-super-secret-key-change-me";
-
-builder.Services
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
-        };
-    });
-
-builder.Services.AddAuthorization();
-
 var app = builder.Build();
-
-await app.SeedDatabaseAsync();
 
 if (app.Environment.IsDevelopment())
 {
@@ -53,10 +51,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseCors("Frontend");
-app.UseAuthentication();
-app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

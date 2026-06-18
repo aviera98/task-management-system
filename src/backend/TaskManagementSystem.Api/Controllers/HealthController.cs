@@ -1,19 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
+using TaskManagementSystem.Api.Services;
 
 namespace TaskManagementSystem.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public sealed class HealthController : ControllerBase
+public sealed class HealthController(IHealthService healthService) : ControllerBase
 {
     [HttpGet]
     public IActionResult Get()
     {
-        return Ok(new
-        {
-            status = "Healthy",
-            service = "Task Management System API",
-            utcTimestamp = DateTime.UtcNow
-        });
+        return Ok(healthService.GetStatus());
     }
 }

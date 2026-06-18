@@ -1,7 +1,7 @@
-import { AppProviders } from '@/app/providers'
+import { Providers } from '@/providers'
 
 function App() {
-  return <AppProviders />
+  return <Providers />
 }
 
 export default App

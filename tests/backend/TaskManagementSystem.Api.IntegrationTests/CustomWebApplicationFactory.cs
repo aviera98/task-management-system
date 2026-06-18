@@ -13,7 +13,7 @@ public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
         {
             configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["UseInMemoryDatabase"] = "true"
+                ["Database:UseInMemory"] = "true"
             });
         });
     }
