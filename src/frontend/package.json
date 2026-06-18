@@ -15,9 +15,9 @@
     "preview": "vite preview"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx,json,md,css}": [
-      "eslint --fix",
-      "prettier --write"
+    "src/frontend/**/*.{ts,tsx,js,jsx,json,md,css}": [
+      "npm --prefix src/frontend exec eslint --fix",
+      "npm --prefix src/frontend exec prettier --write"
     ]
   },
   "dependencies": {
