@@ -56,6 +56,14 @@ dotnet run --project src/backend/TaskManagementSystem.Api
 
 Swagger is available in development. In `Development`, the API uses an in-memory database so it can start even without SQL Server running locally. The SQL Server connection is still configured in `appsettings.json` for the next stage.
 
+The backend now includes base user infrastructure:
+
+- `User` entity with EF Core mapping
+- unique index on `Email`
+- repository and service layer
+- Swagger endpoints for user creation and reads
+- automatic EF Core migration on startup for SQL Server environments
+
 ## Docker Setup
 
 1. Create a local environment file:
@@ -99,6 +107,11 @@ The main variables are documented in `.env.example`:
 - `SQLSERVER_DATABASE`
 - `MSSQL_SA_PASSWORD`
 - `MSSQL_PID`
+- `ADMIN_USER_SEED_ENABLED`
+- `ADMIN_USER_SEED_FIRSTNAME`
+- `ADMIN_USER_SEED_LASTNAME`
+- `ADMIN_USER_SEED_EMAIL`
+- `ADMIN_USER_SEED_PASSWORD`
 
 ## Quality Gates
 

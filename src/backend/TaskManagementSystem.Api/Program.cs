@@ -11,6 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Configure<DatabaseOptions>(
     builder.Configuration.GetSection(DatabaseOptions.SectionName));
+builder.Services.Configure<AdminUserSeedOptions>(
+    builder.Configuration.GetSection(AdminUserSeedOptions.SectionName));
 
 var databaseOptions = builder.Configuration
     .GetSection(DatabaseOptions.SectionName)
@@ -31,7 +33,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.AddScoped<IHealthService, HealthService>();
+builder.Services.AddScoped<IPasswordHasher, Sha256PasswordHasher>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<DatabaseInitializationService>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Frontend", policy =>
@@ -44,6 +50,12 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+await using (var scope = app.Services.CreateAsyncScope())
+{
+    var databaseInitializationService = scope.ServiceProvider.GetRequiredService<DatabaseInitializationService>();
+    await databaseInitializationService.InitializeAsync();
+}
 
 if (app.Environment.IsDevelopment())
 {

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 
 namespace TaskManagementSystem.Api.Middleware;
@@ -11,6 +12,16 @@ public sealed class ExceptionHandlingMiddleware(
         try
         {
             await next(context);
+        }
+        catch (ValidationException exception)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            context.Response.ContentType = "application/json";
+
+            await context.Response.WriteAsJsonAsync(new
+            {
+                message = exception.Message
+            });
         }
         catch (Exception exception)
         {
