@@ -8,5 +8,6 @@ public interface IUserService
     Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
     Task<IReadOnlyCollection<UserResponse>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<UserResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<RegisterResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default);
     Task<UserResponse?> UpdateAsync(Guid id, CreateUserRequest request, CancellationToken cancellationToken = default);
 }

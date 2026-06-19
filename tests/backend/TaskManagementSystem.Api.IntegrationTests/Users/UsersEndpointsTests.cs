@@ -1,6 +1,8 @@
 using FluentAssertions;
 using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using TaskManagementSystem.Api.DTOs;
 using TaskManagementSystem.Api.Entities;
 
@@ -9,6 +11,12 @@ namespace TaskManagementSystem.Api.IntegrationTests.Users;
 public sealed class UsersEndpointsTests(CustomWebApplicationFactory factory)
     : IClassFixture<CustomWebApplicationFactory>
 {
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+        Converters = { new JsonStringEnumConverter() }
+    };
+
     [Fact]
     public async Task CreateUser_ShouldReturnCreated()
     {
@@ -26,7 +34,7 @@ public sealed class UsersEndpointsTests(CustomWebApplicationFactory factory)
 
         response.StatusCode.Should().Be(HttpStatusCode.Created);
 
-        var createdUser = await response.Content.ReadFromJsonAsync<UserResponse>();
+        var createdUser = await response.Content.ReadFromJsonAsync<UserResponse>(JsonOptions);
         createdUser.Should().NotBeNull();
         createdUser!.Email.Should().Be("ada@example.com");
         createdUser.Role.Should().Be(UserRole.Manager);

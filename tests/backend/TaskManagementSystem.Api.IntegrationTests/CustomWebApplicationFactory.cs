@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace TaskManagementSystem.Api.IntegrationTests;
 
@@ -15,6 +16,10 @@ public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
             {
                 ["Database:UseInMemory"] = "true"
             });
+        });
+        builder.ConfigureLogging(logging =>
+        {
+            logging.ClearProviders();
         });
     }
 }

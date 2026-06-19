@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using TaskManagementSystem.Api.DTOs;
+using TaskManagementSystem.Api.Exceptions;
 
 namespace TaskManagementSystem.Api.Middleware;
 
@@ -17,27 +19,31 @@ public sealed class ExceptionHandlingMiddleware(
         }
         catch (ValidationException exception)
         {
-            // Los errores de validacion se traducen a 400 para el cliente.
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             context.Response.ContentType = "application/json";
 
-            await context.Response.WriteAsJsonAsync(new
-            {
-                message = exception.Message
-            });
+            await context.Response.WriteAsJsonAsync(new ErrorResponse(exception.Message));
+        }
+        catch (EmailAlreadyExistsException exception)
+        {
+            logger.LogInformation(
+                "Conflict while processing request because the email already exists: {Email}",
+                exception.Email);
+
+            context.Response.StatusCode = (int)HttpStatusCode.Conflict;
+            context.Response.ContentType = "application/json";
+
+            await context.Response.WriteAsJsonAsync(new ErrorResponse(exception.Message));
         }
         catch (Exception exception)
         {
-            // Todo lo demas se registra y se devuelve como error generico.
             logger.LogError(exception, "Unhandled exception");
 
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             context.Response.ContentType = "application/json";
 
-            await context.Response.WriteAsJsonAsync(new
-            {
-                message = "An unexpected error occurred."
-            });
+            await context.Response.WriteAsJsonAsync(
+                new ErrorResponse("An unexpected error occurred."));
         }
     }
 }

@@ -1,16 +1,23 @@
 using System.Security.Cryptography;
-using System.Text;
 
 namespace TaskManagementSystem.Api.Services;
 
-// Implementacion basica para hashear passwords antes de guardarlas.
 public sealed class Sha256PasswordHasher : IPasswordHasher
 {
+    private const int SaltSize = 16;
+    private const int KeySize = 32;
+    private const int Iterations = 100_000;
+
     public string Hash(string value)
     {
-        // Convierte el texto a bytes y genera su hash hexadecimal.
-        var bytes = Encoding.UTF8.GetBytes(value);
-        var hash = SHA256.HashData(bytes);
-        return Convert.ToHexString(hash);
+        var salt = RandomNumberGenerator.GetBytes(SaltSize);
+        var hash = Rfc2898DeriveBytes.Pbkdf2(
+            value,
+            salt,
+            Iterations,
+            HashAlgorithmName.SHA256,
+            KeySize);
+
+        return $"{Iterations}.{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
     }
 }

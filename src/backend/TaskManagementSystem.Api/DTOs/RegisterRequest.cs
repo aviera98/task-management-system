@@ -1,18 +1,16 @@
 using System.ComponentModel.DataAnnotations;
-using TaskManagementSystem.Api.Entities;
 using TaskManagementSystem.Api.Validation;
 
 namespace TaskManagementSystem.Api.DTOs;
 
-// Contrato de entrada para crear o actualizar usuarios desde HTTP.
-public sealed class CreateUserRequest
+public sealed class RegisterRequest
 {
     [Required]
-    [StringLength(100, MinimumLength = 2)]
+    [StringLength(100)]
     public string FirstName { get; init; } = string.Empty;
 
     [Required]
-    [StringLength(100, MinimumLength = 2)]
+    [StringLength(100)]
     public string LastName { get; init; } = string.Empty;
 
     [Required]
@@ -23,8 +21,4 @@ public sealed class CreateUserRequest
     [Required]
     [PasswordComplexity]
     public string Password { get; init; } = string.Empty;
-
-    [Required]
-    [EnumDataType(typeof(UserRole))]
-    public UserRole Role { get; init; } = UserRole.Member;
 }
