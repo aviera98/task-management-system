@@ -35,6 +35,15 @@ public sealed class ExceptionHandlingMiddleware(
 
             await context.Response.WriteAsJsonAsync(new ErrorResponse(exception.Message));
         }
+        catch (InvalidCredentialsException exception)
+        {
+            logger.LogInformation("Unauthorized request because credentials were invalid.");
+
+            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            context.Response.ContentType = "application/json";
+
+            await context.Response.WriteAsJsonAsync(new ErrorResponse(exception.Message));
+        }
         catch (Exception exception)
         {
             logger.LogError(exception, "Unhandled exception");

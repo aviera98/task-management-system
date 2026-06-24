@@ -37,6 +37,10 @@ services:
       AdminUserSeed__LastName: ${ADMIN_USER_SEED_LASTNAME}
       AdminUserSeed__Email: ${ADMIN_USER_SEED_EMAIL}
       AdminUserSeed__Password: ${ADMIN_USER_SEED_PASSWORD}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+      Jwt__SecretKey: ${JWT_SECRET_KEY}
+      Jwt__ExpirationMinutes: ${JWT_EXPIRATION_MINUTES}
       ConnectionStrings__DefaultConnection: Server=sqlserver,1433;Database=${SQLSERVER_DATABASE};User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;Encrypt=False
     ports:
       - "${BACKEND_PORT}:8080"

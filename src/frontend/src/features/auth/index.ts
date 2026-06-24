@@ -1,0 +1,6 @@
+export * from '@/features/auth/components/protected-route'
+export * from '@/features/auth/context/auth-provider'
+export * from '@/features/auth/hooks/use-auth'
+export * from '@/features/auth/pages/login-page'
+export * from '@/features/auth/pages/register-page'
+export * from '@/features/auth/types'
