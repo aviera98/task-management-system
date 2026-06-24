@@ -44,6 +44,15 @@ public sealed class ExceptionHandlingMiddleware(
 
             await context.Response.WriteAsJsonAsync(new ErrorResponse(exception.Message));
         }
+        catch (UnauthorizedAccessException exception)
+        {
+            logger.LogInformation("Unauthorized request: {Message}", exception.Message);
+
+            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            context.Response.ContentType = "application/json";
+
+            await context.Response.WriteAsJsonAsync(new ErrorResponse(exception.Message));
+        }
         catch (Exception exception)
         {
             logger.LogError(exception, "Unhandled exception");

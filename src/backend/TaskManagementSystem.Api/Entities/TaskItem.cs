@@ -1,10 +1,15 @@
 namespace TaskManagementSystem.Api.Entities;
 
-// Version simple de tarea usada por la API para persistir datos basicos.
+// Entidad persistida para tareas pertenecientes a un usuario.
 public sealed class TaskItem
 {
     public Guid Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
+    public TaskItemStatus Status { get; set; } = TaskItemStatus.Todo;
+    public TaskItemPriority Priority { get; set; } = TaskItemPriority.Medium;
+    public Guid UserId { get; set; }
+    public User User { get; set; } = null!;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; set; }
 }

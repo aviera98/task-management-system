@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace TaskManagementSystem.Api.IntegrationTests;
 
@@ -28,6 +31,25 @@ public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
         builder.ConfigureLogging(logging =>
         {
             logging.ClearProviders();
+        });
+        builder.ConfigureServices(services =>
+        {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "TestOrBearer";
+                options.DefaultChallengeScheme = "TestOrBearer";
+            })
+            .AddPolicyScheme("TestOrBearer", "TestOrBearer", options =>
+            {
+                options.ForwardDefaultSelector = context =>
+                {
+                    var authorizationHeader = context.Request.Headers.Authorization.ToString();
+                    return authorizationHeader.StartsWith("Test ", StringComparison.OrdinalIgnoreCase)
+                        ? "Test"
+                        : JwtBearerDefaults.AuthenticationScheme;
+                };
+            })
+            .AddScheme<AuthenticationSchemeOptions, TestAuthenticationHandler>("Test", _ => { });
         });
     }
 }

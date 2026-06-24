@@ -119,12 +119,103 @@ The main variables are documented in `.env.example`:
 cd src/frontend
 npm run lint
 npm run build
+npm run test
+npm run test:coverage
 ```
 
 ```bash
 dotnet build TaskManagementSystem.sln
 dotnet test TaskManagementSystem.sln
 ```
+
+## Testing
+
+### Frontend
+
+The frontend test stack uses:
+
+- `Vitest`
+- `React Testing Library`
+- `jsdom`
+- `@vitest/coverage-v8`
+
+Commands:
+
+```bash
+cd src/frontend
+npm run test
+npm run test:coverage
+```
+
+Coverage output:
+
+- text summary in the terminal
+- HTML report under `src/frontend/coverage`
+
+Current frontend coverage:
+
+- Statements: `89.32%`
+- Branches: `80.12%`
+- Functions: `95.00%`
+- Lines: `89.26%`
+
+Covered frontend areas:
+
+- `TasksPage` loading, empty, error and populated states
+- `TaskForm` create, edit and validation flows
+- `AuthProvider` login, logout and session restore
+- `ProtectedRoute` authenticated and unauthenticated navigation
+- HTTP client and API wrappers
+- task query/mutation hooks
+
+### Backend
+
+The backend test stack uses:
+
+- `xUnit`
+- `FluentAssertions`
+- ASP.NET Core integration tests
+- `coverlet.collector`
+
+Commands:
+
+```bash
+dotnet test TaskManagementSystem.sln
+dotnet test tests/backend/TaskManagementSystem.Api.IntegrationTests/TaskManagementSystem.Api.IntegrationTests.csproj --collect:"XPlat Code Coverage" --settings tests/backend/coverage.runsettings
+```
+
+Coverage output:
+
+- Cobertura XML under `tests/backend/**/TestResults/**/coverage.cobertura.xml`
+- backend coverage filtering rules are defined in `tests/backend/coverage.runsettings`
+
+Current backend API coverage:
+
+- Lines: `83.20%`
+
+The backend coverage command intentionally excludes generated or non-business files from the API metric:
+
+- EF Core migrations
+- Swagger example filter
+- design-time `ApplicationDbContextFactory`
+- generated files under `obj`
+
+Covered backend areas:
+
+- `GET /api/tasks` returns only the authenticated user's tasks
+- `GET /api/tasks/{id}` allows own access and blocks cross-user access
+- `POST /api/tasks` handles creation and validation failures
+- `PUT /api/tasks/{id}` updates owned tasks and blocks foreign tasks
+- `DELETE /api/tasks/{id}` deletes owned tasks and blocks foreign tasks
+- login JWT claims and user ownership flow are validated through integration tests
+
+### Strategy
+
+The testing strategy is intentionally split by responsibility:
+
+- frontend tests focus on user-visible flows, route protection, state transitions and form behavior
+- backend integration tests focus on HTTP contracts, authorization boundaries, ownership restrictions and data persistence
+- coverage excludes generated artifacts so CI can enforce meaningful thresholds on production code
 
 ## Troubleshooting
 

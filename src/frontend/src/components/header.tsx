@@ -4,7 +4,7 @@ import type { NavItem } from '@/types/nav-item'
 import { cn } from '@/utils/cn'
 
 const navigationItems: NavItem[] = [
-  { to: '/', label: 'Home' },
+  { to: '/tasks', label: 'Tasks' },
   { to: '/setup', label: 'Setup' },
 ]
 
@@ -18,7 +18,7 @@ export function Header() {
           <p className="text-xs uppercase tracking-[0.35em] text-cyan-300">
             Task Management System
           </p>
-          <h1 className="mt-2 text-2xl font-semibold">Frontend Authentication</h1>
+          <h1 className="mt-2 text-2xl font-semibold">Task Workspace</h1>
         </div>
         <div className="flex items-center gap-4">
           <nav className="flex gap-2 rounded-full border border-white/10 bg-white/5 p-1">
