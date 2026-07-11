@@ -1,5 +1,9 @@
 import { httpClient } from '@/features/auth/api/http-client'
-import type { CreateTaskRequest, Task, UpdateTaskRequest } from '@/features/tasks/types'
+import type {
+  CreateTaskRequest,
+  Task,
+  UpdateTaskRequest,
+} from '@/features/tasks/types'
 
 export function getTasks(accessToken: string, signal?: AbortSignal) {
   return httpClient<Task[]>('/api/tasks', {
@@ -16,7 +20,11 @@ export function createTask(accessToken: string, request: CreateTaskRequest) {
   })
 }
 
-export function updateTask(accessToken: string, taskId: string, request: UpdateTaskRequest) {
+export function updateTask(
+  accessToken: string,
+  taskId: string,
+  request: UpdateTaskRequest,
+) {
   return httpClient<Task>(`/api/tasks/${taskId}`, {
     accessToken,
     body: request,

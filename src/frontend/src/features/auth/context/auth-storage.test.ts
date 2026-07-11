@@ -1,4 +1,8 @@
-import { clearStoredSession, loadStoredSession, storeSession } from '@/features/auth/context/auth-storage'
+import {
+  clearStoredSession,
+  loadStoredSession,
+  storeSession,
+} from '@/features/auth/context/auth-storage'
 
 describe('auth-storage', () => {
   beforeEach(() => {
@@ -38,7 +42,9 @@ describe('auth-storage', () => {
     )
 
     expect(loadStoredSession()).toBeNull()
-    expect(window.localStorage.getItem('task-management-system.auth')).toBeNull()
+    expect(
+      window.localStorage.getItem('task-management-system.auth'),
+    ).toBeNull()
   })
 
   it('clears the stored session explicitly', () => {
@@ -46,6 +52,8 @@ describe('auth-storage', () => {
 
     clearStoredSession()
 
-    expect(window.localStorage.getItem('task-management-system.auth')).toBeNull()
+    expect(
+      window.localStorage.getItem('task-management-system.auth'),
+    ).toBeNull()
   })
 })

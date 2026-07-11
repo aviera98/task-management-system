@@ -3,7 +3,9 @@ import { getAuthFormErrorMessage } from '@/features/auth/hooks/use-auth-form-err
 
 describe('getAuthFormErrorMessage', () => {
   it('returns backend messages for handled status codes', () => {
-    expect(getAuthFormErrorMessage(new ApiError('Conflict.', 409))).toBe('Conflict.')
+    expect(getAuthFormErrorMessage(new ApiError('Conflict.', 409))).toBe(
+      'Conflict.',
+    )
   })
 
   it('returns generic message for unknown errors', () => {

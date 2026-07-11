@@ -1,4 +1,8 @@
-import type { AuthSession, AuthStorageSchema, UserRole } from '@/features/auth/types'
+import type {
+  AuthSession,
+  AuthStorageSchema,
+  UserRole,
+} from '@/features/auth/types'
 
 const AUTH_STORAGE_KEY = 'task-management-system.auth'
 const validRoles: UserRole[] = ['Admin', 'Manager', 'Member']

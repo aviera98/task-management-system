@@ -75,10 +75,15 @@ export function RegisterPage() {
     >
       <div className="space-y-6">
         <div>
-          <p className="text-sm uppercase tracking-[0.25em] text-cyan-300">Register</p>
-          <h3 className="mt-3 text-2xl font-semibold text-white">Create your account</h3>
+          <p className="text-sm uppercase tracking-[0.25em] text-cyan-300">
+            Register
+          </p>
+          <h3 className="mt-3 text-2xl font-semibold text-white">
+            Create your account
+          </h3>
           <p className="mt-2 text-sm text-slate-300">
-            The resulting JWT is stored locally and reused for future protected routes.
+            The resulting JWT is stored locally and reused for future protected
+            routes.
           </p>
         </div>
 
@@ -142,7 +147,10 @@ export function RegisterPage() {
 
         <p className="text-sm text-slate-300">
           Already registered?{' '}
-          <Link className="font-medium text-cyan-300 hover:text-cyan-200" to="/login">
+          <Link
+            className="font-medium text-cyan-300 hover:text-cyan-200"
+            to="/login"
+          >
             Sign in
           </Link>
           .

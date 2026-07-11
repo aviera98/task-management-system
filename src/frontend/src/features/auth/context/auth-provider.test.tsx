@@ -15,7 +15,9 @@ function AuthConsumer() {
       <span>{user?.email ?? 'no-user'}</span>
       <button
         type="button"
-        onClick={() => login({ email: 'ada@example.com', password: 'Password123' })}
+        onClick={() =>
+          login({ email: 'ada@example.com', password: 'Password123' })
+        }
       >
         login
       </button>
@@ -59,7 +61,9 @@ describe('AuthProvider', () => {
     })
 
     expect(screen.getByText('ada@example.com')).toBeInTheDocument()
-    expect(window.localStorage.getItem('task-management-system.auth')).toContain('token-123')
+    expect(
+      window.localStorage.getItem('task-management-system.auth'),
+    ).toContain('token-123')
   })
 
   it('logs out and clears the stored session', async () => {
@@ -91,7 +95,9 @@ describe('AuthProvider', () => {
       expect(screen.getByText('anonymous')).toBeInTheDocument()
     })
 
-    expect(window.localStorage.getItem('task-management-system.auth')).toBeNull()
+    expect(
+      window.localStorage.getItem('task-management-system.auth'),
+    ).toBeNull()
   })
 
   it('restores the session from local storage on startup', () => {

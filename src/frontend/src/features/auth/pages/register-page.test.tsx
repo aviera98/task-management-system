@@ -81,12 +81,16 @@ describe('RegisterPage', () => {
     await user.type(screen.getByLabelText('Password'), 'weak')
     await user.click(screen.getByRole('button', { name: 'Create account' }))
 
-    expect(await screen.findByText('Password must be at least 8 characters long.')).toBeInTheDocument()
+    expect(
+      await screen.findByText('Password must be at least 8 characters long.'),
+    ).toBeInTheDocument()
   })
 
   it('shows backend errors on failed registration', async () => {
     const user = userEvent.setup()
-    const registerMock = vi.fn().mockRejectedValue(new ApiError('Email already exists.', 409))
+    const registerMock = vi
+      .fn()
+      .mockRejectedValue(new ApiError('Email already exists.', 409))
 
     vi.mocked(authHook.useAuth).mockReturnValue({
       accessToken: null,

@@ -6,7 +6,13 @@ interface FormFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string
 }
 
-export function FormField({ className, error, id, label, ...props }: FormFieldProps) {
+export function FormField({
+  className,
+  error,
+  id,
+  label,
+  ...props
+}: FormFieldProps) {
   return (
     <label className="block space-y-2" htmlFor={id}>
       <span className="text-sm font-medium text-slate-200">{label}</span>
@@ -16,7 +22,9 @@ export function FormField({ className, error, id, label, ...props }: FormFieldPr
         className={cn(
           'w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-slate-50 outline-none transition',
           'placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30',
-          error ? 'border-rose-400/70 focus:border-rose-400 focus:ring-rose-400/20' : '',
+          error
+            ? 'border-rose-400/70 focus:border-rose-400 focus:ring-rose-400/20'
+            : '',
           className,
         )}
       />

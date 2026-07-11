@@ -1,6 +1,7 @@
 import { ApiError } from '@/features/auth/types'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.trim() || 'http://localhost:8080'
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL?.trim() || 'http://localhost:8080'
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
@@ -28,7 +29,10 @@ async function parseResponse<T>(response: Response): Promise<T> {
 
   try {
     const payload = (await response.json()) as ErrorResponsePayload
-    if (typeof payload.message === 'string' && payload.message.trim().length > 0) {
+    if (
+      typeof payload.message === 'string' &&
+      payload.message.trim().length > 0
+    ) {
       message = payload.message
     }
   } catch {

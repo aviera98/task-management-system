@@ -63,7 +63,10 @@ describe('useTasksQuery', () => {
       expect(result.current.isSuccess).toBe(true)
     })
 
-    expect(tasksApi.getTasks).toHaveBeenCalledWith('token-123', expect.any(AbortSignal))
+    expect(tasksApi.getTasks).toHaveBeenCalledWith(
+      'token-123',
+      expect.any(AbortSignal),
+    )
     expect(result.current.data).toHaveLength(1)
   })
 })

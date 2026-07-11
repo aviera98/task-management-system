@@ -18,7 +18,10 @@ describe('TaskForm', () => {
     )
 
     await user.type(screen.getByLabelText('Title'), 'Release docs')
-    await user.type(screen.getByLabelText('Description'), 'Prepare docs for deployment.')
+    await user.type(
+      screen.getByLabelText('Description'),
+      'Prepare docs for deployment.',
+    )
     await user.selectOptions(screen.getByLabelText('Priority'), 'High')
     await user.click(screen.getByRole('button', { name: 'Create task' }))
 

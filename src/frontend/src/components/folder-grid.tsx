@@ -9,10 +9,15 @@ function FolderColumn({
 }) {
   return (
     <article className="rounded-[2rem] border border-white/10 bg-white/5 p-8">
-      <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">{title}</p>
+      <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">
+        {title}
+      </p>
       <ul className="mt-6 space-y-3 text-slate-200">
         {folders.map((folder) => (
-          <li key={folder} className="rounded-2xl border border-white/10 px-4 py-3">
+          <li
+            key={folder}
+            className="rounded-2xl border border-white/10 px-4 py-3"
+          >
             {folder}
           </li>
         ))}

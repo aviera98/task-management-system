@@ -1,45 +1,188 @@
 # Task Management System
 
-Initial full stack base for a Task Management System portfolio project.
+[![Build](https://github.com/aviera98/task-management-system/actions/workflows/ci.yml/badge.svg)](https://github.com/aviera98/task-management-system/actions/workflows/ci.yml)
+[![Tests](https://github.com/aviera98/task-management-system/actions/workflows/ci.yml/badge.svg?label=tests)](https://github.com/aviera98/task-management-system/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## Stack
+<!-- Coverage badge placeholder: add Codecov, Coveralls, or another coverage provider badge here when external coverage publishing is enabled. -->
 
-- Frontend: React, TypeScript, Vite, React Router, Tailwind
-- Backend: ASP.NET Core 8 Web API, Entity Framework Core, SQL Server, Swagger
-- Quality: ESLint, Prettier, Husky, lint-staged
+Task Management System is a full stack portfolio project that demonstrates a production-oriented approach to building a business application with React, TypeScript, ASP.NET Core 8, SQL Server, Docker, automated tests, and GitHub Actions.
 
-## Goal
+The project is intentionally built as an interview-ready codebase: the goal is not only to implement task management features, but to show maintainable architecture, clean layering, secure authentication, automated quality gates, and professional documentation.
 
-Provide a professional initial structure only, without business logic yet.
+## Objectives
 
-## Structure
+- Build a realistic enterprise-style task management application.
+- Keep frontend and backend responsibilities clearly separated.
+- Use DTOs, services, repositories, dependency injection, validation, and structured error handling.
+- Protect task data with JWT authentication and user ownership rules.
+- Run automated tests and coverage reports in CI for every push and pull request.
+- Provide clear documentation for technical interviews and open source review.
 
-- `src/frontend`: React application
-- `src/backend/TaskManagementSystem.Api`: ASP.NET Core Web API
-- `tests/backend`: integration and placeholder backend tests
+## Main Features
 
-## Container Architecture
+- User registration with validation and duplicate email protection.
+- Login with JWT authentication.
+- Authenticated frontend session handling.
+- Protected frontend routes.
+- Task CRUD for authenticated users.
+- User ownership enforcement for task operations.
+- Dashboard summary query on the backend application layer.
+- Swagger/OpenAPI support for backend endpoints.
+- Docker Compose environment with frontend, backend, and SQL Server.
+- Integration tests for backend HTTP contracts.
+- Frontend component, hook, API, and route tests.
+- CI pipeline with build, lint, test, coverage, and artifacts.
+- Dependabot configuration for npm, NuGet, and GitHub Actions.
 
-The local Docker environment is composed of three services:
-
-- `frontend`: Vite development server exposed on `5173`
-- `backend`: ASP.NET Core 8 Web API exposed on `8080`
-- `sqlserver`: SQL Server 2022 exposed on `1433`
-
-Container networking details:
-
-- All services run on the internal bridge network `taskms-network`
-- `backend` connects to SQL Server using the service hostname `sqlserver`
-- SQL Server data persists in the named volume `sqlserver-data`
-
-Healthchecks:
-
-- `backend`: `GET /api/health`
-- `sqlserver`: `sqlcmd SELECT 1`
-
-## Run Locally
+## Technologies
 
 ### Frontend
+
+- React
+- TypeScript
+- Vite
+- React Router
+- TanStack Query
+- React Hook Form
+- Zod
+- Tailwind CSS
+- ESLint
+- Prettier
+- Vitest
+- React Testing Library
+
+### Backend
+
+- ASP.NET Core 8 Web API
+- Entity Framework Core
+- SQL Server
+- JWT Bearer Authentication
+- Swagger/OpenAPI
+- xUnit
+- FluentAssertions
+- coverlet.collector
+
+### Infrastructure
+
+- Docker
+- Docker Compose
+- SQL Server 2022 container
+- Environment-based configuration
+- Health checks
+- Persistent SQL Server volume
+
+### DevOps
+
+- GitHub Actions
+- Dependabot
+- CI artifacts
+- Coverage reports
+- EditorConfig
+
+## Architecture
+
+The repository is organized as a monorepo with separate frontend, backend, and test areas.
+
+```text
+src/
+  frontend/
+  backend/
+    TaskManagementSystem.Api/
+    TaskManagementSystem.Application/
+    TaskManagementSystem.Domain/
+    TaskManagementSystem.Infrastructure/
+tests/
+  backend/
+docs/
+```
+
+### Frontend
+
+The frontend uses a feature-based React structure. Authentication and tasks are grouped by feature, with local API clients, hooks, pages, components, and types.
+
+Key responsibilities:
+
+- Render user-facing workflows.
+- Manage authenticated session state.
+- Protect routes that require a logged-in user.
+- Call backend APIs through typed service functions.
+- Validate forms before sending requests.
+
+### Backend
+
+The backend follows a layered structure:
+
+```text
+Controller -> Service -> Repository -> Database
+```
+
+Controllers expose HTTP contracts, services contain business rules, repositories isolate data access, and DTOs prevent EF entities from leaking directly through the API.
+
+### Database
+
+SQL Server is used for persistent storage. Entity Framework Core manages entity mapping, migrations, relationships, and database initialization.
+
+Main entities:
+
+- `User`
+- `TaskItem`
+
+### Docker
+
+Docker Compose runs the complete local environment:
+
+- `frontend`: Vite application on port `5173`
+- `backend`: ASP.NET Core API on port `8080`
+- `sqlserver`: SQL Server on port `1433`
+
+The backend waits for SQL Server health checks before starting, and SQL Server data is persisted in a named Docker volume.
+
+### CI/CD
+
+GitHub Actions runs on every `push` and `pull_request`.
+
+The CI workflow:
+
+1. Checks out the repository.
+2. Installs Node.js.
+3. Installs .NET 8.
+4. Restores frontend dependencies.
+5. Restores backend dependencies.
+6. Runs frontend lint.
+7. Runs frontend Prettier check.
+8. Builds the frontend.
+9. Runs frontend tests.
+10. Generates frontend coverage.
+11. Builds the backend.
+12. Runs backend tests.
+13. Generates backend coverage.
+14. Publishes coverage and test result artifacts.
+
+The pipeline fails fast if lint, format, build, or tests fail.
+
+## Screenshots
+
+The following screenshots should be added before publishing the repository on LinkedIn or using it in interviews.
+
+| Area | Preview |
+| --- | --- |
+| Login | `docs/screenshots/login.png` |
+| Registration | `docs/screenshots/register.png` |
+| Dashboard | `docs/screenshots/dashboard.png` |
+| Task list | `docs/screenshots/tasks.png` |
+| Swagger | `docs/screenshots/swagger.png` |
+
+## Installation
+
+### Prerequisites
+
+- Node.js 22+
+- .NET SDK 8
+- Docker Desktop
+- SQL Server only if running the backend outside Docker with SQL Server enabled
+
+### Local Frontend
 
 ```bash
 cd src/frontend
@@ -47,50 +190,56 @@ npm install
 npm run dev
 ```
 
-### Backend
+Frontend URL:
+
+```text
+http://localhost:5173
+```
+
+### Local Backend
 
 ```bash
 dotnet restore TaskManagementSystem.sln
 dotnet run --project src/backend/TaskManagementSystem.Api
 ```
 
-Swagger is available in development. In `Development`, the API uses an in-memory database so it can start even without SQL Server running locally. The SQL Server connection is still configured in `appsettings.json` for the next stage.
+Backend URL:
 
-The backend now includes base user infrastructure:
+```text
+http://localhost:8080
+```
 
-- `User` entity with EF Core mapping
-- unique index on `Email`
-- repository and service layer
-- Swagger endpoints for user creation and reads
-- automatic EF Core migration on startup for SQL Server environments
+Swagger URL:
 
-## Docker Setup
+```text
+http://localhost:8080/swagger
+```
 
-1. Create a local environment file:
+In `Development`, the API can use an in-memory database. For SQL Server scenarios, configure the connection string through environment variables or user secrets.
+
+### Docker
+
+Create a local environment file:
 
 ```bash
 cp .env.example .env
 ```
 
-2. Start the full stack:
+Update `.env` with local values. Do not commit `.env`.
+
+Start the full stack:
 
 ```bash
 docker compose up --build
 ```
 
-3. Open the services:
-
-- Frontend: `http://localhost:5173`
-- Backend: `http://localhost:8080`
-- Swagger: `http://localhost:8080/swagger`
-
-To stop the environment:
+Stop the stack:
 
 ```bash
 docker compose down
 ```
 
-To stop and remove the SQL Server volume:
+Stop the stack and remove the SQL Server volume:
 
 ```bash
 docker compose down -v
@@ -98,7 +247,9 @@ docker compose down -v
 
 ## Environment Variables
 
-The main variables are documented in `.env.example`:
+The Docker environment is configured through `.env`.
+
+Important variables:
 
 - `ASPNETCORE_ENVIRONMENT`
 - `FRONTEND_PORT`
@@ -108,118 +259,114 @@ The main variables are documented in `.env.example`:
 - `MSSQL_SA_PASSWORD`
 - `MSSQL_PID`
 - `ADMIN_USER_SEED_ENABLED`
-- `ADMIN_USER_SEED_FIRSTNAME`
-- `ADMIN_USER_SEED_LASTNAME`
 - `ADMIN_USER_SEED_EMAIL`
 - `ADMIN_USER_SEED_PASSWORD`
+- `JWT_ISSUER`
+- `JWT_AUDIENCE`
+- `JWT_SECRET_KEY`
+- `JWT_EXPIRATION_MINUTES`
 
-## Quality Gates
+Security notes:
 
-```bash
-cd src/frontend
-npm run lint
-npm run build
-npm run test
-npm run test:coverage
-```
-
-```bash
-dotnet build TaskManagementSystem.sln
-dotnet test TaskManagementSystem.sln
-```
+- `.env` is ignored by Git.
+- `appsettings.json` does not contain production secrets.
+- Replace all example passwords and JWT keys before running outside local development.
+- Keep admin seeding disabled unless a strong password is explicitly configured.
 
 ## Testing
 
 ### Frontend
 
-The frontend test stack uses:
-
-- `Vitest`
-- `React Testing Library`
-- `jsdom`
-- `@vitest/coverage-v8`
-
-Commands:
-
 ```bash
 cd src/frontend
+npm run lint
+npm run format
+npm run build
 npm run test
 npm run test:coverage
 ```
 
-Coverage output:
+Frontend coverage output:
 
-- text summary in the terminal
-- HTML report under `src/frontend/coverage`
+```text
+src/frontend/coverage
+```
 
 Current frontend coverage:
 
-- Statements: `89.32%`
-- Branches: `80.12%`
-- Functions: `95.00%`
-- Lines: `89.26%`
-
-Covered frontend areas:
-
-- `TasksPage` loading, empty, error and populated states
-- `TaskForm` create, edit and validation flows
-- `AuthProvider` login, logout and session restore
-- `ProtectedRoute` authenticated and unauthenticated navigation
-- HTTP client and API wrappers
-- task query/mutation hooks
+- Statements: 89.32%
+- Branches: 80.12%
+- Functions: 95.00%
+- Lines: 89.26%
 
 ### Backend
 
-The backend test stack uses:
-
-- `xUnit`
-- `FluentAssertions`
-- ASP.NET Core integration tests
-- `coverlet.collector`
-
-Commands:
-
 ```bash
-dotnet test TaskManagementSystem.sln
-dotnet test tests/backend/TaskManagementSystem.Api.IntegrationTests/TaskManagementSystem.Api.IntegrationTests.csproj --collect:"XPlat Code Coverage" --settings tests/backend/coverage.runsettings
+dotnet restore TaskManagementSystem.sln
+dotnet build TaskManagementSystem.sln --configuration Release
+dotnet test TaskManagementSystem.sln --configuration Release
 ```
 
-Coverage output:
+Backend coverage:
 
-- Cobertura XML under `tests/backend/**/TestResults/**/coverage.cobertura.xml`
-- backend coverage filtering rules are defined in `tests/backend/coverage.runsettings`
+```bash
+dotnet test TaskManagementSystem.sln \
+  --configuration Release \
+  --collect:"XPlat Code Coverage" \
+  --settings tests/backend/coverage.runsettings \
+  --results-directory TestResults/backend-coverage
+```
 
-Current backend API coverage:
+Backend coverage output:
 
-- Lines: `83.20%`
+```text
+TestResults/backend-coverage/**/coverage.cobertura.xml
+```
 
-The backend coverage command intentionally excludes generated or non-business files from the API metric:
+Current backend coverage:
 
-- EF Core migrations
-- Swagger example filter
-- design-time `ApplicationDbContextFactory`
-- generated files under `obj`
+- Lines: 83%+
 
-Covered backend areas:
+## Documentation
 
-- `GET /api/tasks` returns only the authenticated user's tasks
-- `GET /api/tasks/{id}` allows own access and blocks cross-user access
-- `POST /api/tasks` handles creation and validation failures
-- `PUT /api/tasks/{id}` updates owned tasks and blocks foreign tasks
-- `DELETE /api/tasks/{id}` deletes owned tasks and blocks foreign tasks
-- login JWT claims and user ownership flow are validated through integration tests
+- [Architecture](docs/architecture.md)
+- [Roadmap](docs/roadmap.md)
+- [GitHub repository settings](docs/github-repository-settings.md)
+- [Release notes v1.0.0](docs/releases/v1.0.0.md)
+- [Changelog](CHANGELOG.md)
 
-### Strategy
+## Roadmap
 
-The testing strategy is intentionally split by responsibility:
+### Completed
 
-- frontend tests focus on user-visible flows, route protection, state transitions and form behavior
-- backend integration tests focus on HTTP contracts, authorization boundaries, ownership restrictions and data persistence
-- coverage excludes generated artifacts so CI can enforce meaningful thresholds on production code
+- Monorepo project structure.
+- React + TypeScript frontend.
+- ASP.NET Core 8 backend.
+- SQL Server persistence.
+- Docker Compose environment.
+- Registration and login.
+- JWT authentication.
+- Protected frontend routes.
+- Task CRUD.
+- Backend integration tests.
+- Frontend tests.
+- Coverage reporting.
+- GitHub Actions CI.
+- Dependabot.
+- Professional documentation baseline.
 
-## Troubleshooting
+### Future Work
 
-- If SQL Server fails immediately, verify that `MSSQL_SA_PASSWORD` satisfies SQL Server password rules.
-- If `backend` stays unhealthy, inspect logs with `docker compose logs backend` and confirm that `sqlserver` is healthy first.
-- If the frontend loads but cannot reach the API in later stages, confirm that `BACKEND_PORT` in `.env` still matches the published backend port.
-- If Docker caches an outdated image, rebuild with `docker compose build --no-cache`.
+- External coverage badge integration.
+- End-to-end tests with Playwright.
+- Task filters, pagination, and sorting.
+- Rich dashboard analytics.
+- Role-based administration UI.
+- Refresh token flow.
+- Production deployment pipeline.
+- Observability with structured logs and metrics.
+- Cloud deployment reference architecture.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).

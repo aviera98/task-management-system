@@ -53,7 +53,9 @@ describe('LoginPage', () => {
 
   it('shows backend errors on failed login', async () => {
     const user = userEvent.setup()
-    const loginMock = vi.fn().mockRejectedValue(new ApiError('Invalid credentials.', 401))
+    const loginMock = vi
+      .fn()
+      .mockRejectedValue(new ApiError('Invalid credentials.', 401))
 
     vi.mocked(authHook.useAuth).mockReturnValue({
       accessToken: null,

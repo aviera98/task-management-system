@@ -1,5 +1,10 @@
 import * as httpClientModule from '@/features/auth/api/http-client'
-import { createTask, deleteTask, getTasks, updateTask } from '@/features/tasks/api/tasks-api'
+import {
+  createTask,
+  deleteTask,
+  getTasks,
+  updateTask,
+} from '@/features/tasks/api/tasks-api'
 
 vi.mock('@/features/auth/api/http-client')
 

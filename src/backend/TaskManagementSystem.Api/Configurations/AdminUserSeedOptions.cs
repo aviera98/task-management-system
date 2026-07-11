@@ -9,5 +9,5 @@ public sealed class AdminUserSeedOptions
     public string FirstName { get; init; } = "System";
     public string LastName { get; init; } = "Administrator";
     public string Email { get; init; } = "admin@taskms.local";
-    public string Password { get; init; } = "Admin123!";
+    public string Password { get; init; } = string.Empty;
 }

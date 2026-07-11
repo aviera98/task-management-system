@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'node:path'
@@ -12,12 +12,7 @@ export default defineConfig({
   },
   test: {
     coverage: {
-      exclude: [
-        'src/main.tsx',
-        'src/App.tsx',
-        'src/assets/**',
-        'src/test/**',
-      ],
+      exclude: ['src/main.tsx', 'src/App.tsx', 'src/assets/**', 'src/test/**'],
       provider: 'v8',
       reporter: ['text', 'html'],
     },

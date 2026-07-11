@@ -41,9 +41,15 @@ function mockTasksPageState(overrides?: {
     isLoading: overrides?.isLoading ?? false,
   } as ReturnType<typeof tasksQueryHook.useTasksQuery>)
 
-  vi.mocked(tasksMutationsHook.useCreateTaskMutation).mockReturnValue(createMutation as never)
-  vi.mocked(tasksMutationsHook.useUpdateTaskMutation).mockReturnValue(updateMutation as never)
-  vi.mocked(tasksMutationsHook.useDeleteTaskMutation).mockReturnValue(deleteMutation as never)
+  vi.mocked(tasksMutationsHook.useCreateTaskMutation).mockReturnValue(
+    createMutation as never,
+  )
+  vi.mocked(tasksMutationsHook.useUpdateTaskMutation).mockReturnValue(
+    updateMutation as never,
+  )
+  vi.mocked(tasksMutationsHook.useDeleteTaskMutation).mockReturnValue(
+    deleteMutation as never,
+  )
 }
 
 describe('TasksPage', () => {
@@ -68,7 +74,9 @@ describe('TasksPage', () => {
     render(<TasksPage />)
 
     expect(
-      screen.getByText('No tasks yet. Create the first one from the form to start the authenticated workflow.'),
+      screen.getByText(
+        'No tasks yet. Create the first one from the form to start the authenticated workflow.',
+      ),
     ).toBeInTheDocument()
   })
 
@@ -80,7 +88,9 @@ describe('TasksPage', () => {
 
     render(<TasksPage />)
 
-    expect(screen.getByText('Task request failed. Please try again.')).toBeInTheDocument()
+    expect(
+      screen.getByText('Task request failed. Please try again.'),
+    ).toBeInTheDocument()
   })
 
   it('renders the task list', () => {
@@ -128,7 +138,9 @@ describe('TasksPage', () => {
     await user.selectOptions(screen.getByLabelText('Priority'), 'High')
     await user.click(screen.getByRole('button', { name: 'Create task' }))
 
-    expect(await screen.findByText('Task created successfully.')).toBeInTheDocument()
+    expect(
+      await screen.findByText('Task created successfully.'),
+    ).toBeInTheDocument()
     expect(createMutation.mutateAsync).toHaveBeenCalledWith({
       title: 'Create test task',
       description: 'Body',
@@ -162,7 +174,9 @@ describe('TasksPage', () => {
     await user.type(editTitleInput, 'Updated task')
     await user.click(screen.getByRole('button', { name: 'Save changes' }))
 
-    expect(await screen.findByText('Task updated successfully.')).toBeInTheDocument()
+    expect(
+      await screen.findByText('Task updated successfully.'),
+    ).toBeInTheDocument()
     expect(updateMutation.mutateAsync).toHaveBeenCalledWith({
       taskId: 'task-1',
       request: {
@@ -196,7 +210,9 @@ describe('TasksPage', () => {
     render(<TasksPage />)
 
     await user.click(screen.getByRole('button', { name: 'Completed' }))
-    expect(await screen.findByText('Task status updated successfully.')).toBeInTheDocument()
+    expect(
+      await screen.findByText('Task status updated successfully.'),
+    ).toBeInTheDocument()
     expect(updateMutation.mutateAsync).toHaveBeenCalledWith({
       taskId: 'task-1',
       request: {
@@ -208,7 +224,9 @@ describe('TasksPage', () => {
     })
 
     await user.click(screen.getByRole('button', { name: 'Delete' }))
-    expect(await screen.findByText('Task deleted successfully.')).toBeInTheDocument()
+    expect(
+      await screen.findByText('Task deleted successfully.'),
+    ).toBeInTheDocument()
     expect(deleteMutation.mutateAsync).toHaveBeenCalledWith('task-1')
   })
 })

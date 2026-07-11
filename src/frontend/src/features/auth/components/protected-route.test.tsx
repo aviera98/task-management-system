@@ -4,7 +4,9 @@ import { ProtectedRoute } from '@/features/auth/components/protected-route'
 import { AuthContext } from '@/features/auth/context/auth-context'
 import type { AuthContextValue } from '@/features/auth/types'
 
-function createAuthContextValue(overrides: Partial<AuthContextValue> = {}): AuthContextValue {
+function createAuthContextValue(
+  overrides: Partial<AuthContextValue> = {},
+): AuthContextValue {
   return {
     accessToken: null,
     isAuthenticated: false,

@@ -68,8 +68,12 @@ export function LoginPage() {
     >
       <div className="space-y-6">
         <div>
-          <p className="text-sm uppercase tracking-[0.25em] text-cyan-300">Login</p>
-          <h3 className="mt-3 text-2xl font-semibold text-white">Welcome back</h3>
+          <p className="text-sm uppercase tracking-[0.25em] text-cyan-300">
+            Login
+          </p>
+          <h3 className="mt-3 text-2xl font-semibold text-white">
+            Welcome back
+          </h3>
           <p className="mt-2 text-sm text-slate-300">
             Authenticate once and the session will persist across refreshes.
           </p>
@@ -110,7 +114,10 @@ export function LoginPage() {
 
         <p className="text-sm text-slate-300">
           Need an account?{' '}
-          <Link className="font-medium text-cyan-300 hover:text-cyan-200" to="/register">
+          <Link
+            className="font-medium text-cyan-300 hover:text-cyan-200"
+            to="/register"
+          >
             Create one
           </Link>
           .

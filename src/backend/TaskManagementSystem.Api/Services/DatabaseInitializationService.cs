@@ -41,6 +41,11 @@ public sealed class DatabaseInitializationService(
         var email = options.Email.Trim().ToLowerInvariant();
         var existingUser = await userRepository.GetByEmailAsync(email, cancellationToken);
 
+        if (string.IsNullOrWhiteSpace(options.Password))
+        {
+            throw new InvalidOperationException("AdminUserSeed:Password is required when admin seeding is enabled.");
+        }
+
         // Evita duplicar el admin si la base ya fue inicializada antes.
         if (existingUser is not null)
         {

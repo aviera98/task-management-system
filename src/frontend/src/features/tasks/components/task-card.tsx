@@ -31,7 +31,12 @@ export function TaskCard({
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <span className={cn('rounded-full px-3 py-1 text-xs font-medium', statusAccentMap[task.status])}>
+            <span
+              className={cn(
+                'rounded-full px-3 py-1 text-xs font-medium',
+                statusAccentMap[task.status],
+              )}
+            >
               {task.status}
             </span>
             <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-300">
@@ -39,7 +44,9 @@ export function TaskCard({
             </span>
           </div>
 
-          <h3 className="mt-4 text-xl font-semibold text-white">{task.title}</h3>
+          <h3 className="mt-4 text-xl font-semibold text-white">
+            {task.title}
+          </h3>
           <p className="mt-2 max-w-2xl whitespace-pre-wrap text-sm leading-6 text-slate-300">
             {task.description || 'No description provided.'}
           </p>
@@ -78,7 +85,9 @@ export function TaskCard({
                 : 'border border-white/10 text-slate-300 hover:text-white',
             )}
           >
-            {isUpdatingStatus && task.status !== status ? 'Updating...' : status}
+            {isUpdatingStatus && task.status !== status
+              ? 'Updating...'
+              : status}
           </button>
         ))}
       </div>

@@ -1,7 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import type { CreateTaskRequest, Task, TaskPriority, TaskStatus, UpdateTaskRequest } from '@/features/tasks/types'
+import type {
+  CreateTaskRequest,
+  Task,
+  TaskPriority,
+  TaskStatus,
+  UpdateTaskRequest,
+} from '@/features/tasks/types'
 import { FormField } from '@/features/auth/components/form-field'
 import { cn } from '@/utils/cn'
 
@@ -64,7 +70,9 @@ export function TaskForm(props: TaskFormProps) {
             priority: initialTask?.priority ?? 'Medium',
             status: initialTask?.status ?? 'Todo',
           },
-    resolver: zodResolver(mode === 'create' ? createTaskSchema : updateTaskSchema),
+    resolver: zodResolver(
+      mode === 'create' ? createTaskSchema : updateTaskSchema,
+    ),
   })
 
   const {
@@ -107,14 +115,23 @@ export function TaskForm(props: TaskFormProps) {
           className={cn(
             'w-full rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-slate-50 outline-none transition',
             'placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30',
-            errors.description ? 'border-rose-400/70 focus:border-rose-400 focus:ring-rose-400/20' : '',
+            errors.description
+              ? 'border-rose-400/70 focus:border-rose-400 focus:ring-rose-400/20'
+              : '',
           )}
           {...register('description')}
         />
-        {errors.description ? <p className="text-sm text-rose-300">{errors.description.message}</p> : null}
+        {errors.description ? (
+          <p className="text-sm text-rose-300">{errors.description.message}</p>
+        ) : null}
       </label>
 
-      <div className={cn('grid gap-4', mode === 'edit' ? 'md:grid-cols-2' : 'md:grid-cols-1')}>
+      <div
+        className={cn(
+          'grid gap-4',
+          mode === 'edit' ? 'md:grid-cols-2' : 'md:grid-cols-1',
+        )}
+      >
         <label className="block space-y-2">
           <span className="text-sm font-medium text-slate-200">Priority</span>
           <select

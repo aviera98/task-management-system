@@ -60,7 +60,9 @@ export function Header() {
                 className={({ isActive }) =>
                   cn(
                     'rounded-full px-4 py-2 text-sm transition',
-                    isActive ? 'bg-white text-slate-950' : 'text-slate-300 hover:text-white',
+                    isActive
+                      ? 'bg-white text-slate-950'
+                      : 'text-slate-300 hover:text-white',
                   )
                 }
               >
